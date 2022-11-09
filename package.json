@@ -1,0 +1,9 @@
+{
+  "name": "geocoder",
+  "version": "1.0.0",
+  "description": "geocoding and path finding api",
+  "main": "index.js",
+  "author": "Hasan Aga",
+  "license": "MIT",
+  "private": false
+}
