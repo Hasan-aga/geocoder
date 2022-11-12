@@ -11,7 +11,7 @@ const getRoutePosition = async (res, points) => {
       values.push(...p);
     });
 
-    const queryString = `SELECT ST_AsGeoJSON(ST_Union((the_geom))) FROM ways WHERE id in
+    const queryString = `SELECT ST_AsGeoJSON(ST_Union(the_geom))::json AS geometry FROM ways WHERE id in
                                 (SELECT edge FROM pgr_dijkstra(
                                 'SELECT id,
                                  source,
@@ -27,7 +27,7 @@ const getRoutePosition = async (res, points) => {
     if (!rows) throw new Error("query went wrong!");
     return rows;
   } catch (err) {
-    console.err("GET api/cemetery/getroute/:latitude/:longitude" + err.stack);
+    console.error("GET api/cemetery/getroute/:latitude/:longitude" + err.stack);
     throw new Error("Failed to calculate route, ", err);
   }
 };
