@@ -3,10 +3,10 @@ const http = require("http");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv").config();
+const api = require("./src/routes/api.version");
 
-const api = require("./src/routes/api.route");
 const app = express();
-app.use("/api", api);
+app.use("/v1", api);
 app.use((req, res, next) => {
   const err = new Error("Not Found");
   err.status = 404;

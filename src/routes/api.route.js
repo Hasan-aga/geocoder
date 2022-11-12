@@ -1,14 +1,14 @@
 "use strict";
 const express = require("express");
-const router = express.Router();
 const apiRouterController = require("../controllers/api.controler");
 const bodyParser = require("body-parser");
 
-router.use(bodyParser.urlencoded({ extended: true }));
-router
+const pathRouter = express.Router();
+pathRouter.use(bodyParser.urlencoded({ extended: true }));
+pathRouter
   .route(
     "/getrouteposition/:startlatitude/:startlongitude/:finishlatitude/:finishlongitude"
   )
   .get(apiRouterController.getRoutePosition);
 
-module.exports = router;
+module.exports = pathRouter;
