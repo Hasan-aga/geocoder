@@ -24,7 +24,7 @@ const getRoutePosition = async (res, points) => {
                                 ORDER BY the_geom <-> ST_SetSRID(ST_Point(${values[3]} ,${values[2]}), 4326) LIMIT 1),
                                 directed := true) foo)`;
     const { rows } = await db.query(queryString, []);
-    // if (!rows) throw new Error("query went wrong!");
+    if (!rows) throw new Error("query went wrong!");
     return rows;
   } catch (err) {
     console.err("GET api/cemetery/getroute/:latitude/:longitude" + err.stack);
