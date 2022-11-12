@@ -1,15 +1,16 @@
 const db = require("../db");
 
-const getRoutePosition = async (req, res) => {
-  console.log(`getRoutePosition  ${req.params.startlatitude}, ${req.params.startlongitude}, 
-        ${req.params.finishlatitude}, ${req.params.finishlongitude}`);
+const getRoutePosition = async (res, points) => {
+  console.log(
+    `calculating route between these points: ${points.map((p) => `[${p}] `)}`
+  );
 
   try {
     const values = [];
-    values.push(req.params.startlatitude);
-    values.push(req.params.startlongitude);
-    values.push(req.params.finishlatitude);
-    values.push(req.params.finishlongitude);
+    points.forEach((p) => {
+      values.push(...p);
+    });
+
     const queryString = `SELECT ST_AsGeoJSON(ST_Union((the_geom))) FROM ways WHERE id in
                                 (SELECT edge FROM pgr_dijkstra(
                                 'SELECT id,
@@ -23,16 +24,11 @@ const getRoutePosition = async (req, res) => {
                                 ORDER BY the_geom <-> ST_SetSRID(ST_Point(${values[3]} ,${values[2]}), 4326) LIMIT 1),
                                 directed := true) foo)`;
     const { rows } = await db.query(queryString, []);
-    res.status(200).json({
-      status: "success",
-      data: rows,
-    });
+    // if (!rows) throw new Error("query went wrong!");
+    return rows;
   } catch (err) {
     console.err("GET api/cemetery/getroute/:latitude/:longitude" + err.stack);
-    res.status(400).json({
-      status: "error",
-      data: err.stack,
-    });
+    throw new Error("Failed to calculate route, ", err);
   }
 };
 
