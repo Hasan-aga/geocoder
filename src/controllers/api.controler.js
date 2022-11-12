@@ -27,7 +27,7 @@ const getRoutePosition = async (res, points) => {
     if (!rows) throw new Error("query went wrong!");
     return rows;
   } catch (err) {
-    console.error("GET api/cemetery/getroute/:latitude/:longitude" + err.stack);
+    console.error("error in route controller, " + err.stack);
     throw new Error("Failed to calculate route, ", err);
   }
 };
