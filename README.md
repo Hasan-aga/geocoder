@@ -60,3 +60,12 @@ osm2pgrouting -d routing_db -U postgres -h localhost -p <postgress port number> 
 to get the port number of postgres we use `pg_lsclusters`
 
 osm2pgrouting -d routing_db -U postgres -h localhost -p 5433 -W postgres -f "/mnt/92804264-c37f-48cb-8ec5-49bc5be832fa/hasan/playground/bunyan/personal_projects/geocoder/assets/map.osm" -c "/mnt/92804264-c37f-48cb-8ec5-49bc5be832fa/hasan/playground/bunyan/personal_projects/geocoder/mapconfig.xml" — clean
+
+# docker
+
+docker run --rm -d --network host --name geocoderr -e PORT=3000 \
+-e PGUSER=postgres \
+-e PGHOST=127.0.0.1 \
+-e PGPASSWORD=postgres \
+-e PGDATABASE=osm_ele \
+-e PGPORT=5433 hasanaga/geocoder
